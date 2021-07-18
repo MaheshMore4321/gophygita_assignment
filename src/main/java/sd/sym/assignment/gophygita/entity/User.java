@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "User")
+@Table(name = "UserMaster")
 public class User {
 
     @Id
@@ -46,7 +46,7 @@ public class User {
     private Date updatedTs;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinTable(name = "UserRoleMap", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
+    @JoinTable(name = "UserRoleMapMaster", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<Role> roles;
 
     public User(String name, String username, String password, String language, long mobileNo) {

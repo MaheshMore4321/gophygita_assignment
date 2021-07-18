@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "UserEmailVerification")
+@Table(name = "UserEmailVerificationMaster")
 public class UserEmailVerification {
 
     @Id
