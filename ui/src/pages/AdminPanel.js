@@ -51,7 +51,9 @@ export default function UserPanel() {
           if(userId !== obj.userId && role !== obj.roles[0]){
             window.location.href = '/';
           }
-          loadUserData();
+          else{
+            loadUserData();
+          }
         }
         else{
           window.location.href = '/';
@@ -63,7 +65,9 @@ export default function UserPanel() {
   const [userList, setUserList] = useState([]);
   const loadUserData = () => {
     axios.get(_.ADMIN_PANEL, _.HEADER_DATA(token))
-      .then(response =>{ setUserList(response.data) })
+      .then(responsex =>{
+        setUserList(responsex.data)
+      })
       .catch(error =>{ window.location.href = '/'; });
   }
 

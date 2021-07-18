@@ -3,8 +3,10 @@ package sd.sym.assignment.gophygita.service.application;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sd.sym.assignment.gophygita.constant.ERole;
 import sd.sym.assignment.gophygita.dto.response.MessageResponse;
 import sd.sym.assignment.gophygita.dto.response.UserVO;
+import sd.sym.assignment.gophygita.entity.Role;
 import sd.sym.assignment.gophygita.entity.User;
 import sd.sym.assignment.gophygita.repository.UserEmailVerificationRepository;
 import sd.sym.assignment.gophygita.repository.UserRepository;
@@ -13,6 +15,7 @@ import sd.sym.assignment.gophygita.utility.Utility;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -41,7 +44,18 @@ public class ApplicationService {
         int index = 1;
         List<UserVO> userVOList = new ArrayList<>();
         for (User user : userList) {
-            userVOList.add(new UserVO(user, index++));
+            boolean flag = true;
+            Set<Role> roles = user.getRoles();
+            for(Role role : roles) {
+                if(role.getRoleName().equals(ERole.ROLE_ADMIN)){
+                    flag = false;
+                    break;
+                }
+            }
+
+            if(flag) {
+                userVOList.add(new UserVO(user, index++));
+            }
         }
         return userVOList;
     }
