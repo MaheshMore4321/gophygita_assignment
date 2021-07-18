@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import * as methd from '../utility/Utility';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useParams } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserPanel() {
   const classes = useStyles();
+
+  const reducer = useSelector(state => state);
+
   const { userId } = useParams();
 
   const [jsonData, setJsonData] = useState({
@@ -44,6 +48,13 @@ export default function UserPanel() {
   const callApiLoadData = () => {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
+
+    console.log(reducer.authorization);
+    console.log(reducer.authorization.id);
+    console.log(reducer.authorization.username);
+    console.log(reducer.authorization.role);
+    console.log(reducer.authorization.token);
+
     if(userId !== id){
       window.location.href = '/';
     }
