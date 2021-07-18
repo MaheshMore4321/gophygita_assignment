@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import * as _ from "../constants/ApiUrls";
 import axios from 'axios';
-import { Avatar, Button, CssBaseline, TextField, Link, Grid, Box } from '@material-ui/core';
-import { FormHelperText, Typography, Container } from '@material-ui/core';
+import { Avatar, Button, CssBaseline, TextField, Link, Grid, Box, FormHelperText,
+         Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from "react-redux";
+import { login } from '../actions';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
+
+  const reducer = useSelector(state => state);
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -56,10 +61,23 @@ export default function SignIn() {
       .then(response => {
           if(response.data.flag){
 
-            localStorage.setItem("token", "Bearer " + response.data.token);
-            localStorage.setItem("role", response.data.roles[0]);
-            localStorage.setItem("id", response.data.id);
-            localStorage.setItem("username", response.data.username);
+            const token = "Bearer " + response.data.token;
+            const role = response.data.roles[0];
+            const id = response.data.id;
+            const username = response.data.username;
+
+            localStorage.setItem("token", token);
+            localStorage.setItem("role", role);
+            localStorage.setItem("id", id);
+            localStorage.setItem("username", username);
+
+            dispatch(login( id, username, role, token ));
+
+            console.log(reducer.authorization);
+            console.log(reducer.authorization.id);
+            console.log(reducer.authorization.username);
+            console.log(reducer.authorization.role);
+            console.log(reducer.authorization.token);
 
             if(response.data.roles[0] === 'ROLE_ADMIN') {
               window.location.href = '/dashboard/admin';

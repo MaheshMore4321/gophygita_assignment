@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import * as _ from "../constants/ApiUrls";
 import axios from 'axios';
-import { Avatar, CssBaseline, Link, Grid, Box, Typography, Container, Button } from '@material-ui/core';
+import { Avatar, CssBaseline, Link, Paper, Box, Typography, Container, Button,
+         Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-//import MaterialTable, {MTableToolbar} from "material-table";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,9 +29,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserPanel() {
   const classes = useStyles();
+
+  const reducer = useSelector(state => state);
+
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
   const userId = localStorage.getItem('id');
+
+
+  console.log(reducer.authorization);
+  console.log(reducer.authorization.id);
+  console.log(reducer.authorization.username);
+  console.log(reducer.authorization.role);
+  console.log(reducer.authorization.token);
 
   const callApiLoadData = () => {
     axios.get(_.AUTH_CHECK_URL, _.HEADER_DATA(token))
@@ -59,49 +63,17 @@ export default function UserPanel() {
   const [userList, setUserList] = useState([]);
   const loadUserData = () => {
     axios.get(_.ADMIN_PANEL, _.HEADER_DATA(token))
-      .then(response =>{
-        console.log(response);
-        const obj = response.data;
-        console.log(obj);
-        setUserList(obj)
-      })
+      .then(response =>{ setUserList(response.data) })
       .catch(error =>{ window.location.href = '/'; });
   }
 
   const toggleUserStatus = (userId) => {
-
-    const toggleUserStatusRequest = {
-      userId: userId
-    };
-
-    axios.post(_.TOGGLE_ACTIVE_USER + userId, toggleUserStatusRequest, _.HEADER_DATA(token))
-      .then(response =>{
-        console.log(response);
-        const obj = response.data;
-        console.log(obj);
-        setUserList(obj)
-
-        if(response.data.flag) {
-          loadUserData();
-        }
-      })
+    axios.post(_.TOGGLE_ACTIVE_USER + userId, {}, _.HEADER_DATA(token))
+      .then(response =>{ if(response.data.flag) { loadUserData(); } })
       .catch(error =>{ console.log(error) });
   }
 
   useEffect(callApiLoadData, []);
-
-  // let count = 0;
-  // const adminTableHeaderName = "UserData Table";
-  // const adminTableData = userList && userList;
-  // const adminTableColumn = [
-  //   { title: "Sr. No", field: "rowId", editable: "never", type: "numeric", defaultSort: "desc"},
-  //   { title: "Name", field: "name"},
-  //   { title: "Email", field: "username"},
-  //   { title: "Created Date", field: "createdTs", editable: "never", type: "datetime"},
-  //   { title: "Action(enable/disable users)", field: 'active', render: userList => { return <Button variant="contained" color={userList.active ? "primary" : "secondary" }
-  //   onClick={() => toggleUserStatus(userList.userId)}>{userList.active ? "Deactive User" : "Active User" }
-  //   </Button> } },
-  // ];
 
   return (
     <Container component="main" fullWidth>
@@ -128,39 +100,12 @@ export default function UserPanel() {
                   <TableCell align="right">{row.name}</TableCell>
                   <TableCell align="right">{row.username}</TableCell>
                   <TableCell align="right">{row.createdTs}</TableCell>
-                  <TableCell align="right"><Button variant="contained" color={row.active ? "primary" : "secondary" }
-    onClick={() => toggleUserStatus(row.userId)}>{row.active ? "Deactive User" : "Active User" }
-    </Button></TableCell>
+                  <TableCell align="right"><Button variant="contained" color={row.active ? "primary" : "secondary" } onClick={() => toggleUserStatus(row.userId)}>{row.active ? "Deactive User" : "Active User" } </Button></TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
-
-
-        {/* <MaterialTable
-          title={adminTableHeaderName}
-          data={adminTableData}
-          columns={adminTableColumn}
-
-          // options={{
-          //   search: true,
-          //   sorting: true,
-          //   grouping: true,
-          //   filtering: true,
-          //   exportButton: true,
-
-          //   fixedColumns: { left: 0, right: 0 },
-          //   headerStyle: { backgroundColor: "#3f51b5", color: "#FFF" },
-          // }}
-          components={{
-            Toolbar: props => (
-                <div style={{ backgroundColor: 'blue' }}>
-                    <MTableToolbar {...props} />
-                </div>
-            )
-          }}
-        /> */}
       </div>
       <Box mt={5}>
         <Typography variant="body2" color="textSecondary" align="center">

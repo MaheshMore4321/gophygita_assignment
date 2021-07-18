@@ -1,1 +1,1 @@
-export const TOKEN_CHANGE = "TOKEN_CHANGE";
+export const LOGIN = "LOGIN";

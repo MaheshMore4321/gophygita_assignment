@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import * as _ from "../constants/ApiUrls";
 import axios from 'axios';
 import { Typography, Container, Grid, Dialog } from '@material-ui/core';
-import { Avatar, Button, CssBaseline, Link, Box, FormHelperText } from '@material-ui/core';
-import { TextField, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
+import { Avatar, Button, CssBaseline, Link, Box, FormHelperText, TextField, DialogTitle,
+         DialogActions, DialogContent, DialogContentText, IconButton } from '@material-ui/core';
 import PageviewIcon from '@material-ui/icons/Pageview';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton';
 import * as methd from './../utility/Utility';
 
 const useStyles = makeStyles((theme) => ({
@@ -57,18 +56,8 @@ export default function Fetch() {
     };
 
     axios.get(_.FETCH_CHECK_USER,   { params: UserRequest }, _.HEADER_DATA)
-      .then(response => {
-        console.log(response);
-        if(response.data.flag) {
-          setOpenModal(true);
-        }
-        else{
-          setErrorMessage(response.data.message)
-        }
-      })
-      .catch(error =>{
-        console.log(error);
-      });
+      .then(response => { response.data.flag ? setOpenModal(true) : setErrorMessage(response.data.message); })
+      .catch(error =>{ console.log(error); });
   }
 
   const [passcode, setPasscode] = useState('');
@@ -85,7 +74,6 @@ export default function Fetch() {
 
     axios.get(_.FETCH_PASSCODE_VALIDATE_USER,   { params: UserRequest }, _.HEADER_DATA)
       .then(response => {
-        console.log(response);
         setJson(response.data.flag);
         if(response.data.flag) {
           const obj = response.data.object;
@@ -103,9 +91,7 @@ export default function Fetch() {
           setErrorMessage(response.data.message)
         }
       })
-      .catch(error =>{
-        console.log(error);
-      });
+      .catch(error =>{ console.log(error); });
   }
 
   const [openModal, setOpenModal] = useState(false);
