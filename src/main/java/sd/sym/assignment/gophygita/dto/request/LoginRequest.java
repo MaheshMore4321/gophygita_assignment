@@ -16,4 +16,12 @@ public class LoginRequest {
 
 	@NotBlank
 	private String password;
+
+	public void setUsername(String username) {
+		this.username = username.toLowerCase();
+	}
+
+	public String getUsername() {
+		return this.username.toLowerCase();
+	}
 }

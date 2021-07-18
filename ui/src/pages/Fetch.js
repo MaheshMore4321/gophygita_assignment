@@ -65,6 +65,15 @@ export default function Fetch() {
   const handlePasscodeSubmit = () => {
 
     setJson(false);
+    setJsonData({
+      userId: '',
+      name: '',
+      username: '',
+      language: '',
+      mobileNo: '',
+      active: '',
+      createdTs: '',
+    });
     setErrorMessage('');
 
     const UserRequest = {

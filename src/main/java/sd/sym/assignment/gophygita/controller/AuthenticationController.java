@@ -41,7 +41,7 @@ public class AuthenticationController {
 
 	@GetMapping(path = AUTH_EXIST_USERNAME_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public MessageResponse userNameExist(@RequestParam("username") String username) {
-		return authenticationService.userNameExist(username);
+		return authenticationService.userNameExist(username.toLowerCase());
 	}
 
 	@GetMapping(path = AUTH_CHECK_USERNAME_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,12 +51,12 @@ public class AuthenticationController {
 
 	@GetMapping(path = AUTH_CHECK_PASSCODE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public MessageResponse passcodeVerificationUser(@RequestParam("username") String username, @RequestParam("emailPasscode") String emailPasscode) {
-		return authenticationService.mailVerificationUser(username, FETCH_PURPOSE, emailPasscode);
+		return authenticationService.mailVerificationUser(username.toLowerCase(), FETCH_PURPOSE, emailPasscode);
 	}
 
 	@GetMapping(path = AUTH_CHECK_USERNAME_PASSCODE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object getUserData(@RequestParam("username") String username, @RequestParam("passcode") String passcode) {
-		return authenticationService.mailVerificationUserGetUserData(username, FETCH_PURPOSE, passcode);
+		return authenticationService.mailVerificationUserGetUserData(username.toLowerCase(), FETCH_PURPOSE, passcode);
 	}
 
 	@GetMapping(path = AUTH_CHECK_URL, produces = MediaType.APPLICATION_JSON_VALUE)
