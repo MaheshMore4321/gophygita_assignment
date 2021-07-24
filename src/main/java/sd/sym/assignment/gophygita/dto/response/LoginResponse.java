@@ -15,7 +15,15 @@ public class LoginResponse {
 	private String token;
 	private String type = "Bearer";
 	private String username;
-	private List<String> roles;
+	private String role;
 	private boolean flag;
 	private String message;
+
+	public void setUsername(String username) {
+		this.username = username.toLowerCase();
+	}
+
+	public String getUsername() {
+		return this.username.toLowerCase();
+	}
 }

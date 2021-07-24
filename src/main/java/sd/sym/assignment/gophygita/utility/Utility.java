@@ -9,8 +9,7 @@ import static sd.sym.assignment.gophygita.constant.ApplicationConstant.DATE_TIME
 
 public class Utility {
 
-	private Utility() {
-	}
+	private Utility() {}
 
 	public static int getIntProp(String value) {
 		try {

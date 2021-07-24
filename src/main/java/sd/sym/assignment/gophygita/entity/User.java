@@ -45,9 +45,9 @@ public class User {
     @Column(name = "updatedTs", insertable = false, nullable = false, columnDefinition = " TIMESTAMP DEFAULT CURRENT_TIMESTAMP ")
     private Date updatedTs;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "UserRoleMapMaster", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
-    private Set<Role> roles;
+    private Role role;
 
     public User(String name, String username, String password, String language, long mobileNo) {
         this.name = name;
@@ -55,5 +55,13 @@ public class User {
         this.password = password;
         this.language = language;
         this.mobileNo = mobileNo;
+    }
+
+    public void setUsername(String username) {
+        this.username = username.toLowerCase();
+    }
+
+    public String getUsername() {
+        return this.username.toLowerCase();
     }
 }

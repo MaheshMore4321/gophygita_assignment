@@ -23,24 +23,14 @@ public class UserVO {
     private String username;
     private String language;
     private long mobileNo;
-    private List<String> roles;
+    private String role;
     private Boolean active;
     private Date createdTs;
 
     private boolean flag;
 
     public UserVO(User user) {
-        this.userId = user.getUserId();
-        this.name = user.getName();
-        this.username = user.getUsername();
-        this.language = user.getLanguage();
-        this.mobileNo = user.getMobileNo();
-        Set<Role> role = user.getRoles();
-        this.roles = role.stream()
-                .map(item -> { return item.getRoleName().name(); })
-                .collect(Collectors.toList());
-        this.active = user.isActive();
-        this.createdTs = user.getCreatedTs();
+        this(user, 1L);
     }
 
     public UserVO(User user, long rowId) {
@@ -50,11 +40,16 @@ public class UserVO {
         this.username = user.getUsername();
         this.language = user.getLanguage();
         this.mobileNo = user.getMobileNo();
-        Set<Role> role = user.getRoles();
-        this.roles = role.stream()
-                .map(item -> { return item.getRoleName().name(); })
-                .collect(Collectors.toList());
+        this.role = user.getRole().getRoleName().name();
         this.active = user.isActive();
         this.createdTs = user.getCreatedTs();
+    }
+
+    public void setUsername(String username) {
+        this.username = username.toLowerCase();
+    }
+
+    public String getUsername() {
+        return this.username.toLowerCase();
     }
 }

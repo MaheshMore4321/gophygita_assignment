@@ -1,4 +1,4 @@
-package sd.sym.assignment.gophygita.configuration;
+package sd.sym.assignment.gophygita.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import sd.sym.assignment.gophygita.constant.ERole;
+import sd.sym.assignment.gophygita.configuration.jwt.AuthEntryPointJwt;
+import sd.sym.assignment.gophygita.configuration.jwt.AuthTokenFilter;
 import sd.sym.assignment.gophygita.service.security.UserDetailsServiceImpl;
 
 @Configuration
@@ -23,7 +24,7 @@ import sd.sym.assignment.gophygita.service.security.UserDetailsServiceImpl;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-    UserDetailsServiceImpl userDetailsService;
+	private UserDetailsServiceImpl userDetailsService;
 
 	@Autowired
 	private AuthEntryPointJwt unauthorizedHandler;

@@ -1,4 +1,4 @@
-package sd.sym.assignment.gophygita.configuration;
+package sd.sym.assignment.gophygita.configuration.jwt;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;

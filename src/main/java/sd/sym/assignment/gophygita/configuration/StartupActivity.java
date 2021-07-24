@@ -6,39 +6,31 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import sd.sym.assignment.gophygita.constant.ERole;
+import sd.sym.assignment.gophygita.dao.GoPhygitalDao;
 import sd.sym.assignment.gophygita.entity.Role;
 import sd.sym.assignment.gophygita.entity.User;
-import sd.sym.assignment.gophygita.repository.RoleRepository;
-import sd.sym.assignment.gophygita.repository.UserRepository;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Configuration
-public class InitializeData {
+public class StartupActivity {
 
     @Autowired
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
+    private GoPhygitalDao goPhygitalDao;
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadData() {
 
-        if(!roleRepository.existsByRoleName(ERole.ROLE_USER)){
-            roleRepository.save(new Role(ERole.ROLE_USER));
+        if(!goPhygitalDao.existsByRoleName(ERole.ROLE_USER)){
+            goPhygitalDao.saveRole(new Role(ERole.ROLE_USER));
         }
-        if(!roleRepository.existsByRoleName(ERole.ROLE_ADMIN)){
-            roleRepository.save(new Role(ERole.ROLE_ADMIN));
+        if(!goPhygitalDao.existsByRoleName(ERole.ROLE_ADMIN)){
+            goPhygitalDao.saveRole(new Role(ERole.ROLE_ADMIN));
         }
 
         String adminUsername = "maheshmore4321@gmail.com";
-        if(!userRepository.existsByUsername(adminUsername)){
-
+        if(!goPhygitalDao.existsByUsername(adminUsername)){
             User user = new User();
             user.setName("Mahesh More");
             user.setUsername(adminUsername);
@@ -46,14 +38,8 @@ public class InitializeData {
             user.setLanguage("EN");
             user.setMobileNo(9876543210L);
             user.setActive(true);
-
-            Set<Role> roles = new HashSet<>();
-            Role userRole = roleRepository.findByRoleName(ERole.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-            user.setRoles(roles);
-
-            userRepository.save(user);
+            user.setRole(goPhygitalDao.getRole(ERole.ROLE_ADMIN));
+            goPhygitalDao.saveUser(user);
         }
     }
 }

@@ -1,4 +1,4 @@
-package sd.sym.assignment.gophygita.service.email;
+package sd.sym.assignment.gophygita.service;
 
 import com.sun.mail.smtp.SMTPTransport;
 import lombok.extern.slf4j.Slf4j;

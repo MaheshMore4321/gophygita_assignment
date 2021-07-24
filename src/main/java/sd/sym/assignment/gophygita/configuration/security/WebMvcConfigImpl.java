@@ -1,17 +1,11 @@
-package sd.sym.assignment.gophygita.configuration;
+package sd.sym.assignment.gophygita.configuration.security;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebMvcConfigImpl implements WebMvcConfigurer {
-
-	@Override
-	public void addCorsMappings(final CorsRegistry registry) {
-		registry.addMapping("/**").allowedMethods("*").allowedOrigins("*").allowedHeaders("*");
-	}
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {

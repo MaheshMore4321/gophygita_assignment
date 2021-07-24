@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import sd.sym.assignment.gophygita.entity.Role;
 import sd.sym.assignment.gophygita.entity.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -16,12 +18,9 @@ public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-
 	private String username;
-
 	@JsonIgnore
 	private String password;
-
 	private Collection<? extends GrantedAuthority> authorities;
 
 	public UserDetailsImpl(Long id, String username, String password,
@@ -32,16 +31,19 @@ public class UserDetailsImpl implements UserDetails {
 		this.authorities = authorities;
 	}
 
-	public static UserDetailsImpl build(User user) {
-		List<GrantedAuthority> authorities = user.getRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getRoleName().name()))
-				.collect(Collectors.toList());
+	public static List<GrantedAuthority> getSimpleGrantedAuthority(Role role) {
+		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role.getRoleName().name());
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(simpleGrantedAuthority);
+		return authorities;
+	}
 
+	public static UserDetailsImpl build(User user) {
 		return new UserDetailsImpl(
 				user.getUserId(),
 				user.getUsername(),
-				user.getPassword(), 
-				authorities);
+				user.getPassword(),
+				getSimpleGrantedAuthority(user.getRole()));
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return username;
+		return username.toLowerCase();
 	}
 
 	@Override
